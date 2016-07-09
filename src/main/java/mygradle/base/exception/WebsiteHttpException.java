@@ -1,10 +1,9 @@
-package exception;
+package mygradle.base.exception;
 
 /**
  * WEB异常
  * Created by cactus on 2015/11/23.
  */
-
 public class WebsiteHttpException extends Exception {
 
     public WebsiteHttpException() {

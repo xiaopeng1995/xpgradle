@@ -1,7 +1,5 @@
-package entity;
-
+package mygradle.base.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 /**
  * HTTP REST 接口返回消息 返回消息的格式遵循JSend标准: http://labs.omniti.com/labs/jsend
  */
