@@ -9,5 +9,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public interface Mygamedao extends CrudRepository<Mygame, Long> {
+public interface Mygamedao extends CrudRepository<Mygame,Integer> {
+    public Mygame findByusername(String username);
 }

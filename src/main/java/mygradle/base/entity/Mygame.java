@@ -1,6 +1,8 @@
 package mygradle.base.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 
@@ -10,7 +12,8 @@ import javax.persistence.Id;
 @Entity(name="mygame")
 public class Mygame {
     @Id
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
     // The user email
     private String username;
     // The user name
@@ -33,15 +36,15 @@ public class Mygame {
         this.userpwd = userpwd;
     }
     public Mygame() { }
-    public Mygame(long  id) {
+    public Mygame(Integer  id) {
         this.id = id;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 }
