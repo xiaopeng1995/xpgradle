@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/..//xpgradle/.idea/modules/xpgradle.iml" filepath="$PROJECT_DIR$/..//xpgradle/.idea/modules/xpgradle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/xpgradle.iml" filepath="$PROJECT_DIR$/.idea/modules/xpgradle.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/xpgradle_main.iml" filepath="$PROJECT_DIR$/.idea/modules/xpgradle_main.iml" group="xpgradle" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/xpgradle_test.iml" filepath="$PROJECT_DIR$/.idea/modules/xpgradle_test.iml" group="xpgradle" />
     </modules>

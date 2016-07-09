@@ -27,4 +27,6 @@ dependencies {
     compile("org.springframework.boot:spring-boot")
     compile("org.springframework.boot:spring-boot-starter-amqp")
     compile("org.springframework.boot:spring-boot-starter-web")
+    compile("mysql:mysql-connector-java")
+    compile 'org.apache.commons:commons-lang3:3.4'
 }
