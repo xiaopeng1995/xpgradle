@@ -88,4 +88,5 @@ public class Userinfo {
     public void setUserpwd(String userpwd) {
         this.userpwd = userpwd;
     }
+
 }
