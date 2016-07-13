@@ -1,5 +1,7 @@
 package mygradle.controller;
+import mygradle.base.entity.Info;
 import mygradle.base.entity.Userinfo;
+import mygradle.dao.InfoDao;
 import mygradle.dao.PwdMd5;
 import mygradle.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +15,11 @@ import org.springframework.web.bind.annotation.*;
 public class TestController extends BasicController {
     @Autowired
     UserDao userDao;
+    @Autowired
+    InfoDao infoDao;
     PwdMd5 pwdMd5=new PwdMd5();
     @RequestMapping(value = "/adduser", method = RequestMethod.GET)
-    public String adduser(@RequestParam String name, @RequestParam String pwd) {
+    public Userinfo adduser(@RequestParam String name, @RequestParam String pwd) {
         Userinfo u=new Userinfo();
         PwdMd5 pwdMd5=new PwdMd5();
         u.setUsername(name);
@@ -24,16 +28,16 @@ public class TestController extends BasicController {
         u.setGrade(1);
         if(name==null||pwd==null)
         {
-            return "er_null";
+            return null;
         }
         else  if (userDao.findbyname(name).size()!=0)
         {
-            return "er_findusername";
+            return null;
         }
         else
         {
             userDao.save(u);
-            return "addse";
+            return userDao.findbyname(name).get(0);
         }
 
     }
@@ -72,6 +76,17 @@ public class TestController extends BasicController {
         }
         else {
             return "er_null";
+        }
+    }
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    public Info info(int id) {
+        Info u=infoDao.findOne(id);
+        if(u!=null) {
+
+            return u;
+        }
+        else {
+            return null;
         }
     }
 }
