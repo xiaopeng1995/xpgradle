@@ -19,6 +19,7 @@ public class Userinfo {
     private int exp;
     private int  gamemoney;
     private int gold;
+    private int token;
     private int vigour;
     public Userinfo() { }
     public Userinfo(int  id) {
@@ -89,4 +90,11 @@ public class Userinfo {
         this.userpwd = userpwd;
     }
 
+    public int getToken() {
+        return token;
+    }
+
+    public void setToken(int token) {
+        this.token = token;
+    }
 }
