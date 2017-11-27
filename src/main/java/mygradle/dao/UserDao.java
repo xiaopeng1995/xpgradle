@@ -15,4 +15,7 @@ public interface UserDao extends CrudRepository<Userinfo,Integer> {
     @Query("select u from user u  where name=?1")
     List<Userinfo> findbyname(String name);
 
+    @Query("select u from user u  where id=?1")
+    List<Userinfo> findbyid(Integer id);
+
 }

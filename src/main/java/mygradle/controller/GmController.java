@@ -1,11 +1,13 @@
 package mygradle.controller;
 
 
+import mygradle.dao.UserDao;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +25,9 @@ import java.util.*;
  */
 @RestController
 public class GmController {
+    @Autowired
+    UserDao userDao;
+
     @RequestMapping(value = "/XQCenter/servlet/GetSBP", method = RequestMethod.GET)
     public String test(HttpServletRequest request, HttpServletResponse response) {
         System.out.println(request.getRequestURL());
@@ -76,9 +81,14 @@ public class GmController {
         System.out.println(request.getRequestURL());
         System.out.println(request.getQueryString());
         Map<String, String> urlkeydare = URLRequest(request.getQueryString());
-        String json = get("http://xqcenter.7j123.cn/XQCenter/login/yijie?os=2&sdk=%7B841B5068-E48AB443%7D&sub=yijie&app=%7BF0489371-1767F93D%7D&sess=NTkwYzVlYTBwanJrc3ZnMTBmYTlybXMzazM&uin=" + urlkeydare.get("uin"), null);
-        System.out.println(json);
-        return json;
+       // String json = get("http://xqcenter.7j123.cn/XQCenter/login/yijie?os=2&sdk=%7B841B5068-E48AB443%7D&sub=yijie&app=%7BF0489371-1767F93D%7D&sess=NTkwYzVlYTBwanJrc3ZnMTBmYTlybXMzazM&uin=" + urlkeydare.get("uin"), null);
+       // System.out.println("json:\n "+json);
+        Integer id = Integer.parseInt(urlkeydare.get("uin").toString());
+        String pwd = null;
+        if (userDao.findbyid(id).size() != 0)
+            pwd = userDao.findbyid(id).get(0).getPwd();
+        System.out.println(pwd);
+        return pwd;
     }
 
     @RequestMapping(value = "/XQCenter/servlet/GetUpdateNoticeServlet", method = RequestMethod.GET)

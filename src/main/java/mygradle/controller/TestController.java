@@ -39,9 +39,9 @@ public class TestController extends BasicController {
 
     }
     @RequestMapping(value = "/findbyname", method = RequestMethod.GET)
-    public String findbyname(@RequestParam String name) {
-        if(userDao.findbyname(name).size()!=0)
-            return userDao.findbyname(name).get(0).getPwd();
+    public String findbyname(@RequestParam Integer name) {
+        if(userDao.findbyid(name).size()!=0)
+            return userDao.findbyid(name).get(0).getPwd();
         else
             return null;
     }
