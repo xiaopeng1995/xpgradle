@@ -12,9 +12,7 @@ import java.util.List;
  */
 @Transactional
 public interface UserDao extends CrudRepository<Userinfo,Integer> {
-    @Query("select u from userinfo u  where username=?1")
+    @Query("select u from user u  where name=?1")
     List<Userinfo> findbyname(String name);
-    @Query("select u from userinfo u  where username=?1 and userpwd=?2")
-    List<Userinfo> findbynp(String name,String pwd);
 
 }

@@ -8,23 +8,14 @@ import javax.persistence.Id;
 /**
  * Created by xiaopeng on 2016/7/10.
  */
-@Entity(name="userinfo")
+@Entity(name="user")
 public class Userinfo {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private String username;
-    private String userpwd;
-    private int grade;
-    private int exp;
-    private int  gamemoney;
-    private int gold;
-    private int token;
-    private int vigour;
-    public Userinfo() { }
-    public Userinfo(int  id) {
-        this.id = id;
-    }
+    private String name;
+    private String pwd;
+    private int money;
 
     public int getId() {
         return id;
@@ -34,67 +25,27 @@ public class Userinfo {
         this.id = id;
     }
 
-    public int getGrade() {
-        return grade;
+    public String getName() {
+        return name;
     }
 
-    public void setGrade(int grade) {
-        this.grade = grade;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public int getExp() {
-        return exp;
+    public String getPwd() {
+        return pwd;
     }
 
-    public void setExp(int exp) {
-        this.exp = exp;
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
     }
 
-    public int getGold() {
-        return gold;
+    public int getMoney() {
+        return money;
     }
 
-    public void setGold(int gold) {
-        this.gold = gold;
-    }
-
-    public int getGamemoney() {
-        return gamemoney;
-    }
-
-    public void setGamemoney(int gamemoney) {
-        this.gamemoney = gamemoney;
-    }
-
-    public int getVigour() {
-        return vigour;
-    }
-
-    public void setVigour(int vigour) {
-        this.vigour = vigour;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getUserpwd() {
-        return userpwd;
-    }
-
-    public void setUserpwd(String userpwd) {
-        this.userpwd = userpwd;
-    }
-
-    public int getToken() {
-        return token;
-    }
-
-    public void setToken(int token) {
-        this.token = token;
+    public void setMoney(int money) {
+        this.money = money;
     }
 }
