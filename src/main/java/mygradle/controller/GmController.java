@@ -66,7 +66,19 @@ public class GmController {
         System.out.println(json1);
         return json1;
     }
-
+    @RequestMapping(value = "/XQCenter/servlet/updatecheck", method = RequestMethod.GET)
+    public String test20(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println(request.getRequestURL());
+        System.out.println(request.getQueryString());
+        String xzdz = getPropertiesConfiguration().getString("xzdz");
+        response.setHeader("Accept-Charset", "big5, big5-hkscs, compound_text, euc-jp, euc-kr, gb18030, gb2312, gbk, ibm-thai, ibm00858, ibm01140, ibm01141, ibm01142, ibm01143, ibm01144, ibm01145, ibm01146, ibm01147, ibm01148, ibm01149, ibm037, ibm1026, ibm1047, ibm273, ibm277, ibm278, ibm280, ibm284, ibm285, ibm297, ibm420, ibm424, ibm437, ibm500, ibm775, ibm850, ibm852, ibm855, ibm857, ibm860, ibm861, ibm862, ibm863, ibm864, ibm865, ibm866, ibm868, ibm869, ibm870, ibm871, ibm918, iso-2022-cn, iso-2022-jp, iso-2022-jp-2, iso-2022-kr, iso-8859-1, iso-8859-13, iso-8859-15, iso-8859-2, iso-8859-3, iso-8859-4, iso-8859-5, iso-8859-6, iso-8859-7, iso-8859-8, iso-8859-9, jis_x0201, jis_x0212-1990, koi8-r, koi8-u, shift_jis, tis-620, us-ascii, utf-16, utf-16be, utf-16le, utf-32, utf-32be, utf-32le, utf-8, windows-1250, windows-1251, windows-1252, windows-1253, windows-1254, windows-1255, windows-1256, windows-1257, windows-1258, windows-31j, x-big5-hkscs-2001, x-big5-solaris, x-euc-jp-linux, x-euc-tw, x-eucjp-open, x-ibm1006, x-ibm1025, x-ibm1046, x-ibm1097, x-ibm1098, x-ibm1112, x-ibm1122, x-ibm1123, x-ibm1124, x-ibm1381, x-ibm1383, x-ibm33722, x-ibm737, x-ibm833, x-ibm834, x-ibm856, x-ibm874, x-ibm875, x-ibm921, x-ibm922, x-ibm930, x-ibm933, x-ibm935, x-ibm937, x-ibm939, x-ibm942, x-ibm942c, x-ibm943, x-ibm943c, x-ibm948, x-ibm949, x-ibm949c, x-ibm950, x-ibm964, x-ibm970, x-iscii91, x-iso-2022-cn-cns, x-iso-2022-cn-gb, x-iso-8859-11, x-jis0208, x-jisautodetect, x-johab, x-macarabic, x-maccentraleurope, x-maccroatian, x-maccyrillic, x-macdingbat, x-macgreek, x-machebrew, x-maciceland, x-macroman, x-macromania, x-macsymbol, x-macthai, x-macturkish, x-macukraine, x-ms932_0213, x-ms950-hkscs, x-ms950-hkscs-xp, x-mswin-936, x-pck, x-sjis_0213, x-utf-16le-bom, x-utf-32be-bom, x-utf-32le-bom, x-windows-50220, x-windows-50221, x-windows-874, x-windows-949, x-windows-950, x-windows-iso2022jp");
+        String json1 = "{\"order\":\"0\",\"res2\":{\"url\":\"" + xzdz + "\",\"ver\":\"10001\",\"must\":\"1\",\"size\":\"20487193\",\"type\":\"4\",\"md5\":\"f87b266ca6a33c3c1d9c2b2d27be4be1\"}}";
+        if (request.getQueryString().contains("res_v2=10001")) {
+            json1 = "{\"order\":\"0\"}";
+        }
+        System.out.println(json1);
+        return json1;
+    }
     @RequestMapping(value = "/XQCenter/servlet/LoginLog333", method = RequestMethod.GET)
     public String test4(HttpServletRequest request, HttpServletResponse response) {
         java.util.Random random = new java.util.Random();
@@ -83,11 +95,24 @@ public class GmController {
         Map<String, String> urlkeydare = URLRequest(request.getQueryString());
        // String json = get("http://xqcenter.7j123.cn/XQCenter/login/yijie?os=2&sdk=%7B841B5068-E48AB443%7D&sub=yijie&app=%7BF0489371-1767F93D%7D&sess=NTkwYzVlYTBwanJrc3ZnMTBmYTlybXMzazM&uin=" + urlkeydare.get("uin"), null);
        // System.out.println("json:\n "+json);
-        Integer id = Integer.parseInt(urlkeydare.get("uin").toString());
         String pwd = null;
-        if (userDao.findbyid(id).size() != 0)
-            pwd = userDao.findbyid(id).get(0).getPwd();
-        System.out.println(pwd);
+        if(urlkeydare.get("uin")!=null)
+        {
+            Integer id = Integer.parseInt(urlkeydare.get("uin").toString());
+            if (userDao.findbyid(id).size() != 0)
+            {
+                pwd = userDao.findbyid(id).get(0).getPwd();
+            }else {
+                pwd = get("http://xqcenter.7j123.cn/XQCenter/login/yijie?os=2&sdk=%7B841B5068-E48AB443%7D&sub=yijie&app=%7BF0489371-1767F93D%7D&sess=NTkwYzVlYTBwanJrc3ZnMTBmYTlybXMzazM&uin=" + id, null);
+            }
+
+            System.out.println(pwd);
+        }else if(urlkeydare.get("gameid")!=null){
+            pwd = get("http://xqcenter.7j123.cn/XQCenter/login/yijie?os=2&sdk=%7B841B5068-E48AB443%7D&sub=yijie&app=%7BF0489371-1767F93D%7D&sess=NTkwYzVlYTBwanJrc3ZnMTBmYTlybXMzazM&uin=" + urlkeydare.get("gameid"), null);
+        }else {
+            pwd = userDao.findbyid(1).get(0).getPwd();
+        }
+
         return pwd;
     }
 
