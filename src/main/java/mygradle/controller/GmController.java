@@ -53,7 +53,7 @@ public class GmController {
         return json;
     }
 
-    @RequestMapping(value = "/XQCenter/servlet/updatecheck", method = RequestMethod.GET)
+    @RequestMapping(value = "/a/XQCenter/servlet/updatecheck", method = RequestMethod.GET)
     public String test2(HttpServletRequest request, HttpServletResponse response) {
         System.out.println(request.getRequestURL());
         System.out.println(request.getQueryString());
