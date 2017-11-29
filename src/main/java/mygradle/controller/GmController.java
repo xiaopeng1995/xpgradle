@@ -1,6 +1,7 @@
 package mygradle.controller;
 
 
+import mygradle.dao.ServerDao;
 import mygradle.dao.UserDao;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.http.HttpResponse;
@@ -27,6 +28,8 @@ import java.util.*;
 public class GmController {
     @Autowired
     UserDao userDao;
+    @Autowired
+    ServerDao serverDao;
 
     @RequestMapping(value = "/XQCenter/servlet/GetSBP", method = RequestMethod.GET)
     public String test(HttpServletRequest request, HttpServletResponse response) {
@@ -45,14 +48,14 @@ public class GmController {
         String server_name02 = getPropertiesConfiguration().getString("server_name02");
         //判断 大区数
         if (urlkeydare.get("page").equals("0")) {
-            json = "{\"ss\":[{\"id\":\"220002\",\"name\":\"" + server_name00 + "\",\"state\":2,\"url\":\"" + server_ip00 + "\",\"new\":1,\"desc\":\"欢迎来到猫咪老师游戏！\",\"s_id\":220002,\"time\":\"2017-03-07 11:55:20.0\",\"column\":2}],\"rsids\":[1,2,3]}";
+            json = serverDao.findbyname("server0").get(0).getServer();
         } else {
-            json = "{\"ss\":[{\"id\":\"230122\",\"name\":\"" + server_name01 + "\",\"state\":2,\"url\":\"" + server_ip01 + "\",\"desc\":\"欢迎来到寻秦！\",\"s_id\":230122,\"new\":1,\"time\":\"2016-12-20 15:10:19.0\",\"column\":1},{\"id\":\"230016\",\"name\":\"" + server_name02 + "\",\"state\":2,\"url\":\"" + server_ip02 + "\",\"desc\":\"欢迎来到寻秦！\",\"s_id\":230016,\"new\":1,\"time\":\"2016-12-29 14:00:00.0\",\"column\":1},{\"id\":\"220002\",\"name\":\"" + server_name00 + "\",\"state\":2,\"url\":\"" + server_ip00 + "\",\"desc\":\"欢迎来到猫咪老师游戏！\",\"s_id\":220002,\"new\":1,\"time\":\"2017-01-04 10:02:37.0\",\"column\":1}]}";
+            String ss= urlkeydare.get("page");
+            json = serverDao.findbyname("server"+ss).get(0).getServer();
         }
         System.out.println(json);
         return json;
     }
-
     @RequestMapping(value = "/a/XQCenter/servlet/updatecheck", method = RequestMethod.GET)
     public String test2(HttpServletRequest request, HttpServletResponse response) {
         System.out.println(request.getRequestURL());
@@ -66,6 +69,7 @@ public class GmController {
         System.out.println(json1);
         return json1;
     }
+
     @RequestMapping(value = "/XQCenter/servlet/updatecheck", method = RequestMethod.GET)
     public String test20(HttpServletRequest request, HttpServletResponse response) {
         System.out.println(request.getRequestURL());
@@ -79,6 +83,7 @@ public class GmController {
         System.out.println(json1);
         return json1;
     }
+
     @RequestMapping(value = "/XQCenter/servlet/LoginLog333", method = RequestMethod.GET)
     public String test4(HttpServletRequest request, HttpServletResponse response) {
         java.util.Random random = new java.util.Random();
@@ -93,23 +98,21 @@ public class GmController {
         System.out.println(request.getRequestURL());
         System.out.println(request.getQueryString());
         Map<String, String> urlkeydare = URLRequest(request.getQueryString());
-       // String json = get("http://xqcenter.7j123.cn/XQCenter/login/yijie?os=2&sdk=%7B841B5068-E48AB443%7D&sub=yijie&app=%7BF0489371-1767F93D%7D&sess=NTkwYzVlYTBwanJrc3ZnMTBmYTlybXMzazM&uin=" + urlkeydare.get("uin"), null);
-       // System.out.println("json:\n "+json);
+        // String json = get("http://xqcenter.7j123.cn/XQCenter/login/yijie?os=2&sdk=%7B841B5068-E48AB443%7D&sub=yijie&app=%7BF0489371-1767F93D%7D&sess=NTkwYzVlYTBwanJrc3ZnMTBmYTlybXMzazM&uin=" + urlkeydare.get("uin"), null);
+        // System.out.println("json:\n "+json);
         String pwd = null;
-        if(urlkeydare.get("uin")!=null)
-        {
+        if (urlkeydare.get("uin") != null) {
             Integer id = Integer.parseInt(urlkeydare.get("uin").toString());
-            if (userDao.findbyid(id).size() != 0)
-            {
+            if (userDao.findbyid(id).size() != 0) {
                 pwd = userDao.findbyid(id).get(0).getPwd();
-            }else {
+            } else {
                 pwd = get("http://xqcenter.7j123.cn/XQCenter/login/yijie?os=2&sdk=%7B841B5068-E48AB443%7D&sub=yijie&app=%7BF0489371-1767F93D%7D&sess=NTkwYzVlYTBwanJrc3ZnMTBmYTlybXMzazM&uin=" + id, null);
             }
 
             System.out.println(pwd);
-        }else if(urlkeydare.get("gameid")!=null){
+        } else if (urlkeydare.get("gameid") != null) {
             pwd = get("http://xqcenter.7j123.cn/XQCenter/login/yijie?os=2&sdk=%7B841B5068-E48AB443%7D&sub=yijie&app=%7BF0489371-1767F93D%7D&sess=NTkwYzVlYTBwanJrc3ZnMTBmYTlybXMzazM&uin=" + urlkeydare.get("gameid"), null);
-        }else {
+        } else {
             pwd = userDao.findbyid(1).get(0).getPwd();
         }
 
@@ -118,9 +121,12 @@ public class GmController {
 
     @RequestMapping(value = "/XQCenter/servlet/GetUpdateNoticeServlet", method = RequestMethod.GET)
     public String test6(HttpServletRequest request, HttpServletResponse response) {
-        Map<String, String> urlkeydare = URLRequest(request.getQueryString());
-        String notemsg = getPropertiesConfiguration().getString("notemsg");
-        String json = "{\"notice_dt\":\"2017年11月17日\",\"popup\":1,\"content\":\"#000000公告：\\r\\n" + notemsg + "\\r\\n\\r\\n福利介绍：\\r\\n#FF0000\\r\\n1、充值比例1：1000，首次充值双倍水玉返还\\r\\n2、上线即送首充，100W水玉，999W银币\\r\\n3、首充赠送神兽、40级无级别极品武器，40级橙色套装\\r\\n4、每日活跃送水玉，40、100活跃分别可领取500、1000水玉\\r\\n5、七日登录奖励大幅提升，次日送珍兽，五日送坐骑，7天累计10000水玉\\r\\n7、等级礼包奖励升级，靓丽时装免费送，累计可领取12万水玉\\r\\n8.战力争霸赛：战力第一获得战力第一礼包，内含紫兽*1、80无级别红色衣服*1\\r\\n9.最强帮派：争夺最强帮派后，整个帮的所有成员都将获得丰厚奖励，职位越高，奖励越好\\r\\n10.全服冲级：欢乐冲级拿水玉，50万元宝等你来拿!等级第一获得水玉*500000，第二获得水玉*200000，第三获得水玉*100000\\r\\n\\r\\n#000000防盗防骗提醒\\r\\n#FF0000为保障玩家账号安全，官方不推荐任何形式的线下交易，任何线下交易均存在安全隐患，尽量避免您的利益受到损失。请您不要轻易相信线下交易行为，感谢您的配合，祝您游戏愉快。\\r\\n\",\"end_time\":3910156,\"show_time\":100000}";
+        System.out.println(request.getRequestURL());
+        System.out.println(request.getQueryString());
+        String json = "{\"notice_dt\":\"2017年11月17日\",\"popup\":1,\"content\":\"#000000公告：\\r\\n测试公告\\r\\n\\r\\n福利介绍：\\r\\n#FF0000\\r\\n测试\\r\\n\\r\\n#000000防盗防骗提醒\\r\\n#FF0000测试\\r\\n\",\"end_time\":3910156,\"show_time\":100000}";
+        if (serverDao.findbyname("note") != null && serverDao.findbyname("note").size() > 0) {
+            json = serverDao.findbyname("note").get(0).getServer();
+        }
         System.out.println(json);
         return json;
     }

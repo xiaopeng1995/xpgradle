@@ -1,5 +1,6 @@
 package mygradle.controller;
 
+import mygradle.base.entity.Serverinfo;
 import mygradle.base.entity.Userinfo;
 
 import mygradle.dao.PwdMd5;
@@ -49,11 +50,20 @@ public class TestController extends BasicController {
             return null;
     }
 
-    private String utf(String str){
+    @RequestMapping(value = "/addserver", method = RequestMethod.GET)
+    public Serverinfo addserver(@RequestParam String server) {
+        Serverinfo serverinfo = new Serverinfo();
+        serverinfo.setNametype("xx");
+        serverinfo.setServer(server);
+        serverDao.save(serverinfo);
+        return serverDao.findbyname("xx").get(0);
+    }
+
+    private String utf(String str) {
         try {
-            byte[] temp=str.getBytes();//这里写原编码方式
-            byte[] newtemp=new String(temp).getBytes("utf-8");//这里写转换后的编码方式
-            String newStr=new String(newtemp,"utf-8");//这里写转换后的编码方式
+            byte[] temp = str.getBytes();//这里写原编码方式
+            byte[] newtemp = new String(temp).getBytes("utf-8");//这里写转换后的编码方式
+            String newStr = new String(newtemp, "utf-8");//这里写转换后的编码方式
             System.out.println(newStr);
             return newStr;
         } catch (UnsupportedEncodingException e) {
