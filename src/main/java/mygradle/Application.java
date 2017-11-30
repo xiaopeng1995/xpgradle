@@ -1,7 +1,9 @@
 package mygradle;
 
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 
 /**
  * Created by xiaopeng on 2016/7/9.
@@ -9,8 +11,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class Application {
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
 
-        SpringApplication.run(Application.class, args);
+      SpringApplication.run(Application.class, args);
+
     }
 }

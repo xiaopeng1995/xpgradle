@@ -1,7 +1,9 @@
 package mygradle.controller;
 
 
+import mygradle.base.entity.Tokeninfo;
 import mygradle.dao.ServerDao;
+import mygradle.dao.TokenDao;
 import mygradle.dao.UserDao;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.http.HttpResponse;
@@ -11,6 +13,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +31,8 @@ import java.util.*;
 public class GmController {
     @Autowired
     UserDao userDao;
+    @Autowired
+    TokenDao tokenDao;
     @Autowired
     ServerDao serverDao;
 
@@ -50,12 +55,13 @@ public class GmController {
         if (urlkeydare.get("page").equals("0")) {
             json = serverDao.findbyname("server0").get(0).getServer();
         } else {
-            String ss= urlkeydare.get("page");
-            json = serverDao.findbyname("server"+ss).get(0).getServer();
+            String ss = urlkeydare.get("page");
+            json = serverDao.findbyname("server" + ss).get(0).getServer();
         }
         System.out.println(json);
         return json;
     }
+
     @RequestMapping(value = "/a/XQCenter/servlet/updatecheck", method = RequestMethod.GET)
     public String test2(HttpServletRequest request, HttpServletResponse response) {
         System.out.println(request.getRequestURL());
@@ -109,13 +115,12 @@ public class GmController {
                 pwd = get("http://xqcenter.7j123.cn/XQCenter/login/yijie?os=2&sdk=%7B841B5068-E48AB443%7D&sub=yijie&app=%7BF0489371-1767F93D%7D&sess=NTkwYzVlYTBwanJrc3ZnMTBmYTlybXMzazM&uin=" + id, null);
             }
 
-            System.out.println(pwd);
         } else if (urlkeydare.get("gameid") != null) {
             pwd = get("http://xqcenter.7j123.cn/XQCenter/login/yijie?os=2&sdk=%7B841B5068-E48AB443%7D&sub=yijie&app=%7BF0489371-1767F93D%7D&sess=NTkwYzVlYTBwanJrc3ZnMTBmYTlybXMzazM&uin=" + urlkeydare.get("gameid"), null);
         } else {
             pwd = userDao.findbyid(1).get(0).getPwd();
         }
-
+        System.out.println(pwd);
         return pwd;
     }
 
@@ -132,10 +137,21 @@ public class GmController {
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public String testmain(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println(request.getRequestURL());
-        String config = getPropertiesConfiguration().getString("test");
-        return config;
+    public String testmain(@RequestParam Integer num) {
+        for (int i = 0; i < num; i++) {
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            String roken = get("http://xqcenter.7j123.cn/XQCenter/login/yijie?os=2&sdk=EE76A3092912D890&sub=maxvip&app=E2AFC9D1292B0500&uin="+new Date().getTime()+"&sess=Njk4MWJjZTMyNmFlYzQwYTA0ZjFjZjJmNTQ4OGRmYWE&", null);
+            Tokeninfo tokeninfo = new Tokeninfo();
+            tokeninfo.setToken(roken);
+            tokeninfo.setStatus(0);
+            tokenDao.save(tokeninfo);
+            System.out.println(roken);
+        }
+        return "成功添加"+num+"个账户token !";
     }
 
     /**
