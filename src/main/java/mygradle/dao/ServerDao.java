@@ -13,7 +13,10 @@ import java.util.List;
  */
 @Transactional
 public interface ServerDao extends CrudRepository<Serverinfo, Integer> {
+    @Query("select s from server s  where nametype=?1 and name=?2")
+    List<Serverinfo> findbyname(String nametype,String name);
+
     @Query("select s from server s  where nametype=?1")
-    List<Serverinfo> findbyname(String name);
+    List<Serverinfo> findbyname(String nametype);
 }
 

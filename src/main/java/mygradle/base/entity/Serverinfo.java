@@ -15,6 +15,7 @@ public class Serverinfo {
     private int id;
     private String nametype;
     private String server;
+    private String name;
 
     public int getId() {
         return id;
@@ -38,5 +39,13 @@ public class Serverinfo {
 
     public void setNametype(String nametype) {
         this.nametype = nametype;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
